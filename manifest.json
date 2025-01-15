@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "No disctraction mode",
+  "version": "1.0",
+  "description": "A extension to block all the distractive websites",
+  "permissions": ["activeTab", "scripting","webRequest", "declarativeNetRequest", "tabs", "storage" ],
+  "host_permissions": ["<all_urls>"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "staticRuleset",
+        "enabled": true,
+        "path": "config/rules.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "images/jhipster_family_member_1_head-192.png"
+    }
+  }
+}
