@@ -1,6 +1,10 @@
 // List of blocked URLs
 const blockedSites = ["youtube.com", "anotherwebsite.com"];
 
+function getExtensionId() {
+  return chrome.runtime.id;
+}
+
 async function loadBlockedSites() {
   const response = await fetch(chrome.runtime.getURL("config/blocked_sites.json"));
   const data = await response.json();
@@ -9,12 +13,19 @@ async function loadBlockedSites() {
 
 async function updateBlockingRules() {
   const blockedSites = await loadBlockedSites();
-  
+  const extensionId = getExtensionId();
+  const redirectUrl = `chrome-extension://${extensionId}/blocked.html`;
+
   // Create rules for each site
   const rules = blockedSites.map((site, index) => ({
     id: index + 1,
     priority: 1,
-    action: { type: "block" },
+    action: { 
+      type: "redirect" ,
+      redirect: {
+         "url": redirectUrl 
+         }
+      },
     condition: { urlFilter: site, resourceTypes: ["main_frame"] }
   }));
 
